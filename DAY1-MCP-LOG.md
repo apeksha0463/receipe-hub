@@ -7,7 +7,7 @@
 | Project | RecipeHub |
 | Stack | React + Vite + JavaScript + CSS |
 | Live site | https://receipe-hub-sand.vercel.app/ |
-| GitHub repository | https://github.com/apeksha0463/receipe-hub |
+| GitHub repository | https://github.com/apeksha0463/recipe-hub |
 
 ## Figma
 
