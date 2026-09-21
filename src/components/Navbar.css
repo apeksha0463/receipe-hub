@@ -1,0 +1,163 @@
+.navbar {
+  position: relative;
+  z-index: 10;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: var(--page-max);
+  height: calc(var(--nav-height) - 1px); /* Figma's 1px border sits inside the 88px bar */
+  margin: 0 auto;
+  padding: 0 var(--page-pad);
+}
+
+/* ---------- Logo ---------- */
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar__logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 20px;
+  background: var(--color-accent);
+}
+
+.navbar__brand {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: normal;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.navbar__brand-accent {
+  color: var(--color-accent);
+}
+
+/* ---------- Links ---------- */
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.navbar__link {
+  position: relative;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-text);
+  transition: color 0.15s ease;
+}
+
+.navbar__link:hover {
+  color: var(--color-accent);
+}
+
+/* Active: terracotta text with a 2px underline 4px below (Figma "Indicator"). */
+.navbar__link--active {
+  color: var(--color-accent);
+  transform: translateY(-3px);
+}
+
+.navbar__link--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}
+
+/* ---------- Mobile toggle (hidden on desktop) ---------- */
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0 11px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+}
+
+.navbar__toggle-bar {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-text);
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 720px) {
+  .navbar__logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+  }
+
+  .navbar__brand {
+    font-size: 22px;
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+
+  .navbar__links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px var(--page-pad) 16px;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 12px 24px rgba(42, 36, 33, 0.08);
+  }
+
+  .navbar__links--open {
+    display: flex;
+  }
+
+  .navbar__link {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .navbar__links .navbar__link:last-child {
+    border-bottom: 0;
+  }
+
+  .navbar__link--active {
+    transform: none;
+  }
+
+  /* No underline in the stacked menu: the accent colour marks the active page. */
+  .navbar__link--active::after {
+    display: none;
+  }
+}

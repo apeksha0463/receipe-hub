@@ -1,0 +1,212 @@
+/* ==========================================================================
+   RecipeHub — global tokens, reset and shared layout
+   All values come from the Figma design (1440px desktop frames).
+   ========================================================================== */
+
+:root {
+  /* Colours */
+  --color-bg: #fbf9f4;
+  --color-surface: #ffffff;
+  --color-border: #eae1d9;
+  --color-accent: #c2593f;
+  --color-text: #2a2421;
+  --color-text-muted: #6b5e59;
+  --color-footer-bg: #2a2421;
+  --color-footer-link: #d9cfc9;
+  --color-footer-muted: #a2928a;
+  --color-footer-line: #4f443e;
+
+  /* Difficulty badges */
+  --badge-easy-bg: #e6f4ea;
+  --badge-easy-text: #137333;
+  --badge-medium-bg: #fdf2e9;
+  --badge-medium-text: #b06000;
+  --badge-hard-bg: #fce8e6;
+  --badge-hard-text: #c5221f;
+
+  /* Spacing tokens (Figma variables) */
+  --space-s: 24px;
+  --space-sm: 32px;
+
+  /* Layout */
+  --page-max: 1440px;
+  --page-pad: 80px;
+  --nav-height: 88px;
+
+  /* Radii */
+  --radius-card: 20px;
+  --radius-category: 24px;
+  --radius-panel: 24px;
+  --radius-hero: 32px;
+  --radius-control: 16px;
+  --radius-pill: 100px;
+
+  /* Typography */
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-title: 64px;
+  --fs-heading: 40px;
+  --fs-subheading: 24px;
+  --fs-body: 20px;
+  --fs-small: 16px;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --page-pad: 40px;
+    --fs-title: 52px;
+    --fs-heading: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --page-pad: 20px;
+    --nav-height: 72px;
+    --fs-title: 40px;
+    --fs-heading: 30px;
+    --fs-subheading: 20px;
+    --fs-body: 18px;
+  }
+}
+
+/* ---------- Reset ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Shared layout ---------- */
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: var(--fs-heading);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Search bar (home hero + recipes page) */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 56px;
+  padding: 0 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-bar:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(194, 89, 63, 0.15);
+}
+
+.search-bar img {
+  flex: none;
+}
+
+.search-bar input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.search-bar input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.search-bar input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
