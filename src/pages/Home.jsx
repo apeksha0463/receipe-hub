@@ -8,7 +8,7 @@ import './Home.css';
 
 // The three recipes featured under "Popular Recipes" in the Figma home frame.
 const popularIds = ['classic-pasta-carbonara', 'grilled-salmon-with-asparagus', 'berry-smoothie-bowl'];
-const popularRecipes = popularIds.map((id) => recipes.find((recipe) => recipe.id === id));
+const popularRecipes = popularIds.map((id) => recipes.find((recipe) => recipe.id === id)).filter(Boolean);
 
 export default function Home() {
   const [query, setQuery] = useState('');

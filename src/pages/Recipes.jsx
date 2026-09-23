@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
 import searchIcon from '../assets/icons/search.svg';
-import { filters, recipes } from '../data/recipes';
+import { filterRecipes, filters, recipes, searchRecipes } from '../data/recipes';
 import './Recipes.css';
 
 export default function Recipes() {
@@ -19,14 +19,10 @@ export default function Recipes() {
     setQuery(urlQuery);
   }, [urlQuery]);
 
-  const visibleRecipes = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    return recipes.filter(
-      (recipe) =>
-        (activeFilter === 'All' || recipe.category === activeFilter) &&
-        (needle === '' || recipe.title.toLowerCase().includes(needle)),
-    );
-  }, [activeFilter, query]);
+  const visibleRecipes = useMemo(
+    () => filterRecipes(searchRecipes(recipes, query), activeFilter),
+    [activeFilter, query],
+  );
 
   const selectFilter = (filter) => {
     setSearchParams((params) => {

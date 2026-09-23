@@ -204,7 +204,7 @@
   flex-direction: column;
   gap: var(--space-sm);
   min-width: 0;
-  scroll-margin-top: 24px;
+  scroll-margin-top: calc(var(--nav-height) + 16px);
 }
 
 .steps {
