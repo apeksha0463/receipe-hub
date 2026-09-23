@@ -346,3 +346,14 @@ export const recipes = [
 ];
 
 export const getRecipeById = (id) => recipes.find((recipe) => recipe.id === id);
+
+export const searchRecipes = (recipeList, query) => {
+  const needle = query.trim().toLowerCase();
+  if (needle === '') return recipeList;
+  return recipeList.filter(r => r.title.toLowerCase().includes(needle));
+};
+
+export const filterRecipes = (recipeList, category) => {
+  if (category === 'All') return recipeList;
+  return recipeList.filter(r => r.category === category);
+};
