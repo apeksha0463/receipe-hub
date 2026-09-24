@@ -1,41 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { fireEvent, render, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
-import App from '../App'
+import { fireEvent, screen, within } from '@testing-library/react'
+import { currentUrl, goBack, renderAt } from './renderApp'
 
-// Shows the current URL and exposes browser-style Back, so tests can check URL state.
-function RouterProbe() {
-  const location = useLocation()
-  const navigate = useNavigate()
-  return (
-    <>
-      <output data-testid="location">{location.pathname + location.search + location.hash}</output>
-      <button type="button" onClick={() => navigate(-1)}>
-        browser-back
-      </button>
-    </>
-  )
-}
-
-function renderAt(url) {
-  const user = userEvent.setup()
-  render(
-    <MemoryRouter initialEntries={[url]} useTransitions={false}>
-      <App />
-      <RouterProbe />
-    </MemoryRouter>,
-  )
-  return user
-}
-
-const currentUrl = () => screen.getByTestId('location').textContent
 const searchBox = () => screen.getByRole('searchbox', { name: 'Search recipes' })
 const cardTitles = () =>
   within(screen.getByRole('region', { name: 'Recipes' }))
     .queryAllByRole('heading', { level: 3 })
     .map((heading) => heading.textContent)
-const goBack = (user) => user.click(screen.getByRole('button', { name: 'browser-back' }))
 const setScrollY = (y) => {
   window.scrollY = y
   fireEvent.scroll(window)

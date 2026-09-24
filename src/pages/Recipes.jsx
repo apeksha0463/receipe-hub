@@ -2,13 +2,15 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import useRecipes from '../hooks/useRecipes';
 import searchIcon from '../assets/icons/search.svg';
-import { filterRecipes, filters, findFilter, recipes, searchRecipes } from '../data/recipes';
+import { filterRecipes, filters, findFilter, searchRecipes } from '../data/recipes';
 import './Recipes.css';
 
 export default function Recipes() {
   useDocumentTitle('Recipes | RecipeHub');
   const [searchParams, setSearchParams] = useSearchParams();
+  const { recipes, status } = useRecipes();
 
   // The URL is the single source of truth for both the category (?category=Dinner,
   // so Home category cards can link to it) and the search text (?q=pasta).
@@ -17,7 +19,7 @@ export default function Recipes() {
 
   const visibleRecipes = useMemo(
     () => filterRecipes(searchRecipes(recipes, query), activeFilter),
-    [activeFilter, query],
+    [recipes, activeFilter, query],
   );
 
   const updateParam = (name, value, options) => {
@@ -74,6 +76,16 @@ export default function Recipes() {
       </section>
 
       <section className="recipes-results" aria-label="Recipes">
+        {status === 'loading' && (
+          <p className="recipes-status" role="status">
+            Loading community recipes…
+          </p>
+        )}
+        {status === 'error' && (
+          <p className="recipes-status" role="status">
+            Community recipes couldn&apos;t be loaded right now. Showing RecipeHub recipes only.
+          </p>
+        )}
         {visibleRecipes.length > 0 ? (
           <ul className="recipes-grid">
             {visibleRecipes.map((recipe) => (

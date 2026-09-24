@@ -19,9 +19,16 @@
 }
 
 .recipe-card__image {
+  position: relative;
   height: 240px;
   overflow: hidden;
   background: var(--color-border);
+}
+
+.recipe-card__owner {
+  position: absolute;
+  top: 16px;
+  left: 16px;
 }
 
 .recipe-card__image img {
@@ -67,6 +74,7 @@
 /* Wraps to at most two lines, then ends with an ellipsis. */
 .recipe-card__title {
   display: -webkit-box;
+  overflow-wrap: anywhere;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;

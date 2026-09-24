@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import ConfirmDialog from './ConfirmDialog';
 import chefHat from '../assets/icons/chef-hat.svg';
 import './Navbar.css';
 
@@ -7,13 +9,28 @@ const linkClass = ({ isActive }) => `navbar__link${isActive ? ' navbar__link--ac
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, loading, signOut } = useAuth();
 
   // Close the mobile menu on every navigation, including re-clicking the current link
   // (e.g. Categories while already at /#categories), which only changes location.key.
   useEffect(() => {
     setMenuOpen(false);
   }, [location.key]);
+
+  // Recipes stays active on /recipes and /recipes/:id (as in the Figma detail frame),
+  // but not on /recipes/new, which has its own "Add Recipe" link.
+  const recipesActive = location.pathname.startsWith('/recipes') && location.pathname !== '/recipes/new';
+
+  // Go Home first so a protected page (Add Recipe, Profile) doesn't redirect to /login.
+  const handleConfirmLogout = async () => {
+    setConfirmLogout(false);
+    setMenuOpen(false);
+    navigate('/');
+    await signOut();
+  };
 
   return (
     <header className="navbar">
@@ -48,15 +65,52 @@ export default function Navbar() {
           <NavLink to="/" end className={linkClass}>
             Home
           </NavLink>
-          {/* Recipes stays active on /recipes and /recipes/:id (as in the Figma detail frame). */}
-          <NavLink to="/recipes" className={linkClass}>
+          <Link
+            to="/recipes"
+            className={linkClass({ isActive: recipesActive })}
+            aria-current={recipesActive ? 'page' : undefined}
+          >
             Recipes
-          </NavLink>
+          </Link>
           <Link to={{ pathname: '/', hash: '#categories' }} className="navbar__link">
             Categories
           </Link>
+
+          {/* Nothing auth-related is shown until the saved session has been checked (no flicker). */}
+          {!loading &&
+            (user ? (
+              <>
+                <NavLink to="/recipes/new" className={linkClass}>
+                  Add Recipe
+                </NavLink>
+                <NavLink to="/profile" className={linkClass}>
+                  Profile
+                </NavLink>
+                <button
+                  type="button"
+                  className="navbar__link navbar__logout"
+                  aria-haspopup="dialog"
+                  onClick={() => setConfirmLogout(true)}
+                >
+                  Log out
+                </button>
+              </>
+            ) : (
+              <NavLink to="/login" className={linkClass}>
+                Log in
+              </NavLink>
+            ))}
         </nav>
       </div>
+
+      <ConfirmDialog
+        open={confirmLogout}
+        title="Log out"
+        message="Are you sure you want to log out?"
+        confirmLabel="Log out"
+        onConfirm={handleConfirmLogout}
+        onCancel={() => setConfirmLogout(false)}
+      />
     </header>
   );
 }

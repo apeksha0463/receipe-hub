@@ -65,6 +65,12 @@
   align-items: start;
 }
 
+.recipes-status {
+  margin-bottom: 24px;
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
 .recipes-empty {
   padding: 48px 0;
   font-size: var(--fs-subheading);

@@ -1,0 +1,58 @@
+/* Log in / Sign up pages (and the ProtectedRoute loading state). */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding: 80px var(--page-pad) 120px;
+}
+
+.auth-page__status {
+  font-size: var(--fs-subheading);
+  color: var(--color-text-muted);
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  width: 100%;
+  max-width: 480px;
+  padding: 40px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+}
+
+.auth-card__intro,
+.auth-card__switch {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.auth-card__switch a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-form__submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .auth-page {
+    padding-top: 40px;
+    padding-bottom: 72px;
+  }
+
+  .auth-card {
+    padding: 24px;
+  }
+}

@@ -85,6 +85,14 @@
   background: var(--color-accent);
 }
 
+/* "Log out" is a button styled like the nav links. */
+.navbar__logout {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
 /* ---------- Mobile toggle (hidden on desktop) ---------- */
 
 .navbar__toggle {
@@ -107,9 +115,17 @@
   background: var(--color-text);
 }
 
-/* ---------- Mobile ---------- */
+/* Six links when logged in: tighten the spacing before the mobile menu takes over. */
+@media (max-width: 960px) {
+  .navbar__links {
+    gap: 24px;
+  }
+}
 
-@media (max-width: 720px) {
+/* ---------- Mobile (hamburger menu) ---------- */
+
+/* 860px rather than 720px: below this the six logged-in links no longer fit in one row. */
+@media (max-width: 860px) {
   .navbar__logo-icon {
     width: 36px;
     height: 36px;
@@ -146,6 +162,10 @@
   .navbar__link {
     padding: 12px 0;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .navbar__logout {
+    padding: 12px 0;
   }
 
   .navbar__links .navbar__link:last-child {

@@ -48,7 +48,9 @@
   gap: 24px;
 }
 
+/* overflow-wrap: long user-entered words/URLs wrap instead of scrolling the page sideways. */
 .detail__title {
+  overflow-wrap: anywhere;
   font-size: var(--fs-title);
   font-weight: 700;
   line-height: normal;
@@ -56,27 +58,14 @@
   color: var(--color-text);
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  border: 0;
-  border-radius: var(--radius-control);
-  background: var(--color-accent);
-  font-size: var(--fs-small);
-  font-weight: 500;
+/* Only community recipes have a description. */
+.detail__description {
+  max-width: 880px;
+  overflow-wrap: anywhere;
+  font-size: var(--fs-subheading);
+  font-weight: 400;
   line-height: 1.5;
-  color: #ffffff;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.btn:hover {
-  background: #a94a33;
-}
-
-.btn:active {
-  transform: translateY(1px);
+  color: var(--color-text-muted);
 }
 
 .stats {
@@ -119,13 +108,6 @@
   display: flex;
   align-items: flex-start;
   gap: 64px;
-}
-
-.panel-title {
-  font-size: var(--fs-subheading);
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--color-text);
 }
 
 .ingredients {
@@ -191,6 +173,7 @@
 
 .ingredient__text {
   flex: 1 1 auto;
+  overflow-wrap: anywhere;
   min-width: 0;
   font-size: var(--fs-small);
   font-weight: 500;
@@ -243,6 +226,7 @@
 }
 
 .step__title {
+  overflow-wrap: anywhere;
   font-size: var(--fs-small);
   font-weight: 500;
   line-height: 1.5;
@@ -250,6 +234,7 @@
 }
 
 .step__text {
+  overflow-wrap: anywhere;
   font-size: var(--fs-body);
   font-weight: 500;
   line-height: 1.5;

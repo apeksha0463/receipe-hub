@@ -1,10 +1,16 @@
 import { Link, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer';
 import ScrollManager from './components/ScrollManager';
 import Home from './pages/Home';
 import Recipes from './pages/Recipes';
 import RecipeDetail from './pages/RecipeDetail';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import AddRecipe from './pages/AddRecipe';
+import Profile from './pages/Profile';
+import { AuthProvider } from './context/AuthContext';
 import useDocumentTitle from './hooks/useDocumentTitle';
 
 function NotFound() {
@@ -24,16 +30,34 @@ function NotFound() {
 
 export default function App() {
   return (
-    <>
+    <AuthProvider>
       <ScrollManager />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipes" element={<Recipes />} />
+        <Route
+          path="/recipes/new"
+          element={
+            <ProtectedRoute>
+              <AddRecipe />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/recipes/:id" element={<RecipeDetail />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-    </>
+    </AuthProvider>
   );
 }

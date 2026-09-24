@@ -1,0 +1,137 @@
+.add-recipe {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 60px var(--page-pad) 120px;
+}
+
+.add-recipe__header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.add-recipe__intro {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.add-recipe__form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 880px;
+}
+
+.add-recipe__alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.add-recipe__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+}
+
+.add-recipe__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.add-recipe__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add-recipe__row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.add-recipe__row > .form-field,
+.add-recipe__step-fields {
+  flex: 1 1 auto;
+}
+
+.add-recipe__row--step {
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.add-recipe__row--step:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.add-recipe__row--step .add-recipe__remove {
+  margin-top: 32px;
+}
+
+.add-recipe__step-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.add-recipe__remove {
+  flex: none;
+  min-height: 52px;
+}
+
+.add-recipe__add {
+  align-self: flex-start;
+}
+
+.add-recipe__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1024px) {
+  .add-recipe__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .add-recipe {
+    gap: 24px;
+    padding-top: 40px;
+    padding-bottom: 72px;
+  }
+
+  .add-recipe__panel {
+    padding: 20px;
+  }
+
+  .add-recipe__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .add-recipe__row,
+  .add-recipe__row--step {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-recipe__row--step .add-recipe__remove {
+    margin-top: 0;
+  }
+
+  .add-recipe__actions .btn {
+    width: 100%;
+  }
+}

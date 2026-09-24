@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import play from '../assets/icons/play.svg';
 import star from '../assets/icons/star.svg';
@@ -7,7 +7,14 @@ import users from '../assets/icons/users.svg';
 import shield from '../assets/icons/shield.svg';
 import check from '../assets/icons/check.svg';
 import { getRecipeById } from '../data/recipes';
+import {
+  fetchCommunityRecipe,
+  findCachedCommunityRecipe,
+  imageFallbackHandler,
+  isCommunityRecipeId,
+} from '../data/recipeService';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import OwnershipLabel from '../components/OwnershipLabel';
 import './RecipeDetail.css';
 
 function IngredientsList({ ingredients }) {
@@ -31,7 +38,7 @@ function IngredientsList({ ingredients }) {
   return (
     <ul className="ingredients__list">
       {ingredients.map((item, index) => (
-        <li key={item.name}>
+        <li key={`${index}-${item.name}`}>
           <label className="ingredient">
             <input
               type="checkbox"
@@ -50,17 +57,62 @@ function IngredientsList({ ingredients }) {
   );
 }
 
+/**
+ * Finds the recipe for :id: a static recipe, a cached community recipe, or one
+ * fetched from Supabase (numeric ids only).
+ */
+function useRecipe(id) {
+  const known = getRecipeById(id) ?? findCachedCommunityRecipe(id);
+  const needsFetch = !known && isCommunityRecipeId(id);
+  const [fetched, setFetched] = useState(null); // { id, recipe, failed }
+
+  useEffect(() => {
+    if (!needsFetch) return undefined;
+    let active = true;
+    fetchCommunityRecipe(id)
+      .then((recipe) => active && setFetched({ id, recipe, failed: false }))
+      .catch(() => active && setFetched({ id, recipe: null, failed: true }));
+    return () => {
+      active = false;
+    };
+  }, [id, needsFetch]);
+
+  if (known) return { recipe: known, status: 'ready' };
+  if (!needsFetch) return { recipe: null, status: 'ready' };
+  if (fetched?.id !== id) return { recipe: null, status: 'loading' };
+  return { recipe: fetched.recipe, status: fetched.failed ? 'error' : 'ready' };
+}
+
 export default function RecipeDetail() {
   const { id } = useParams();
-  const recipe = getRecipeById(id);
-  useDocumentTitle(recipe ? `${recipe.title} | RecipeHub` : 'Recipe Not Found | RecipeHub');
+  const { recipe, status } = useRecipe(id);
+  useDocumentTitle(
+    recipe
+      ? `${recipe.title} | RecipeHub`
+      : status === 'loading'
+        ? 'Loading Recipe | RecipeHub'
+        : 'Recipe Not Found | RecipeHub',
+  );
 
-  if (!recipe) {
+  if (status === 'loading') {
     return (
       <main className="page detail detail--missing">
-        <h1 className="section-title">Recipe not found</h1>
+        <p className="detail__missing-text" role="status">
+          Loading recipe…
+        </p>
+      </main>
+    );
+  }
+
+  if (!recipe) {
+    const failed = status === 'error';
+    return (
+      <main className="page detail detail--missing">
+        <h1 className="section-title">{failed ? 'Recipe unavailable' : 'Recipe not found'}</h1>
         <p className="detail__missing-text">
-          We couldn&apos;t find the recipe you were looking for.
+          {failed
+            ? 'This recipe could not be loaded right now. Please try again later.'
+            : 'We couldn’t find the recipe you were looking for.'}
         </p>
         <Link to="/recipes" className="btn">
           Browse all recipes
@@ -76,10 +128,15 @@ export default function RecipeDetail() {
   return (
     <main className="page detail">
       <div className="detail__hero">
-        <img src={recipe.heroImage ?? recipe.image} alt={recipe.title} />
+        <img
+          src={recipe.heroImage ?? recipe.image}
+          alt={recipe.title}
+          onError={imageFallbackHandler(recipe.fallbackImage)}
+        />
       </div>
 
       <section className="detail__overview">
+        <OwnershipLabel recipe={recipe} />
         <div className="detail__heading">
           <h1 className="detail__title">{recipe.title}</h1>
           <button type="button" className="btn" onClick={scrollToInstructions}>
@@ -88,26 +145,33 @@ export default function RecipeDetail() {
           </button>
         </div>
 
+        {recipe.description && <p className="detail__description">{recipe.description}</p>}
+
         <ul className="stats">
-          <li className="stat">
-            <img src={star} alt="" width="20" height="20" />
-            <span>
-              {recipe.rating.toFixed(1)}{' '}
-              <span className="stat__muted"> ({recipe.reviews} reviews)</span>
-            </span>
-          </li>
+          {/* Community recipes have no ratings yet. */}
+          {recipe.rating != null && (
+            <li className="stat">
+              <img src={star} alt="" width="20" height="20" />
+              <span>
+                {recipe.rating.toFixed(1)}{' '}
+                <span className="stat__muted"> ({recipe.reviews} reviews)</span>
+              </span>
+            </li>
+          )}
           <li className="stat">
             <img src={clockAccent} alt="" width="20" height="20" />
             <span>
               {recipe.time} min <span className="stat__muted"> (prep + cook)</span>
             </span>
           </li>
-          <li className="stat">
-            <img src={users} alt="" width="20" height="20" />
-            <span>
-              {recipe.servings} {recipe.servings === 1 ? 'Serving' : 'Servings'}
-            </span>
-          </li>
+          {recipe.servings && (
+            <li className="stat">
+              <img src={users} alt="" width="20" height="20" />
+              <span>
+                {recipe.servings} {recipe.servings === 1 ? 'Serving' : 'Servings'}
+              </span>
+            </li>
+          )}
           <li className="stat">
             <img src={shield} alt="" width="20" height="20" />
             <span>{recipe.difficulty} Difficulty</span>
@@ -132,7 +196,7 @@ export default function RecipeDetail() {
           </h2>
           <ol className="steps">
             {recipe.steps.map((step, index) => (
-              <li className="step" key={step.title}>
+              <li className="step" key={`${index}-${step.title}`}>
                 <span className="step__number" aria-hidden="true">
                   {index + 1}
                 </span>

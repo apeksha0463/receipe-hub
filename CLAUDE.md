@@ -10,6 +10,7 @@ RecipeHub is a multi-page recipe discovery website.
 - Vite
 - JavaScript
 - CSS
+- Supabase (auth + community `recipes` table) via @supabase/supabase-js
 
 ## Pages
 
@@ -18,6 +19,9 @@ The website contains:
 1. Home
 2. Recipes
 3. Recipe Details
+4. Log in / Sign up
+5. Add Recipe (logged-in users only)
+6. Profile / My Recipes (logged-in users only)
 
 ## Folder Structure
 
@@ -28,6 +32,12 @@ src/components/ for reusable components
 src/pages/ for page components
 
 src/assets/ for images and static assets
+
+src/data/ for static recipes (recipes.js) and Supabase queries (recipeService.js)
+
+src/context/, src/hooks/, src/lib/ for auth state, shared hooks and the Supabase client
+
+supabase/policies.sql for the RLS policies (run in the Supabase SQL editor)
 
 ## Naming Conventions
 
