@@ -91,6 +91,12 @@ describe('Feature: Recipe Detail Data (TC-DETAIL)', () => {
     const preChecked = biryani.ingredients.filter(i => i.checked === true)
     expect(preChecked.length).toBe(3)
   })
+
+  it('TC-DETAIL-08: chicken biryani has a single difficulty value (no detail-page override)', () => {
+    const biryani = getRecipeById('chicken-biryani')
+    expect(biryani.difficulty).toBe('Hard')
+    expect(biryani).not.toHaveProperty('detailDifficulty')
+  })
 })
 
 describe('Feature: Navigation Data (TC-NAV)', () => {

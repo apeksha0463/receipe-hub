@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import searchIcon from '../assets/icons/search.svg';
 import arrowRight from '../assets/icons/arrow-right.svg';
 import { categories, heroCarbonara, recipes } from '../data/recipes';
@@ -11,6 +12,7 @@ const popularIds = ['classic-pasta-carbonara', 'grilled-salmon-with-asparagus', 
 const popularRecipes = popularIds.map((id) => recipes.find((recipe) => recipe.id === id)).filter(Boolean);
 
 export default function Home() {
+  useDocumentTitle('RecipeHub');
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
@@ -86,7 +88,7 @@ export default function Home() {
         <ul className="popular-grid">
           {popularRecipes.map((recipe) => (
             <li key={recipe.id}>
-              <RecipeCard recipe={recipe} image={recipe.homeImage} timeUnit="mins" />
+              <RecipeCard recipe={recipe} image={recipe.homeImage} />
             </li>
           ))}
         </ul>

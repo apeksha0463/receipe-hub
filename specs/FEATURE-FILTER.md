@@ -13,4 +13,5 @@ Users can filter recipes by category using filter pills on the Recipes page.
 - Active filter pill has --active CSS class
 - Category links from Home page pre-select the correct filter
 - Unknown category defaults to 'All'
+- Category matching ignores case (?category=dinner selects Dinner)
 - filters array always starts with 'All'

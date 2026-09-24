@@ -16,3 +16,4 @@ Shows full recipe info: hero image, stats, ingredients checklist, step-by-step i
 - Servings is a positive integer
 - Chicken Biryani starts with exactly 3 pre-checked ingredients (checked: true in data)
 - getRecipeById('classic-pasta-carbonara') returns the correct recipe
+- Difficulty on the detail page matches the card (Chicken Biryani: Hard on both)

@@ -40,9 +40,6 @@ export const filters = ['All', ...categories.map((c) => c.name)];
  * - `homeImage`    optional alternate thumbnail used in Home "Popular Recipes"
  *                  (the Figma home + recipes frames use different Carbonara photos)
  * - `heroImage`    large image on the detail page (falls back to `image`)
- * - `detailDifficulty` optional override of the detail-page difficulty text
- *                  (Figma shows Chicken Biryani as "Hard" on the card but
- *                  "Medium Difficulty" on the detail page)
  * - `ingredients`  `checked: true` items start ticked (as in the Figma detail frame)
  */
 export const recipes = [
@@ -90,7 +87,6 @@ export const recipes = [
     category: 'Dinner',
     time: 45,
     difficulty: 'Hard',
-    detailDifficulty: 'Medium Difficulty',
     image: chickenBiryaniCard,
     heroImage: chickenBiryaniHero,
     rating: 4.8,
@@ -202,8 +198,8 @@ export const recipes = [
     ],
   },
   {
-    id: 'authentic-fried-rice',
-    title: 'Authentic Fried Rice',
+    id: 'vegetable-fried-rice',
+    title: 'Vegetable Fried Rice',
     category: 'Lunch',
     time: 20,
     difficulty: 'Easy',
@@ -352,6 +348,10 @@ export const searchRecipes = (recipeList, query) => {
   if (needle === '') return recipeList;
   return recipeList.filter(r => r.title.toLowerCase().includes(needle));
 };
+
+/** Matches a ?category= value to a filter name, ignoring case. Unknown or missing → 'All'. */
+export const findFilter = (name) =>
+  filters.find((filter) => filter.toLowerCase() === (name ?? '').trim().toLowerCase()) ?? 'All';
 
 export const filterRecipes = (recipeList, category) => {
   if (category === 'All') return recipeList;

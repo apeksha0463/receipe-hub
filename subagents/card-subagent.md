@@ -6,7 +6,6 @@ Responsible for rendering recipe thumbnail cards in the grid on Home and Recipes
 ## Inputs
 - recipe: { id, title, category, time, difficulty, image, rating, reviews }
 - image: optional prop override
-- timeUnit: optional string
 
 ## Outputs
 - Rendered card with image, title, time, difficulty badge

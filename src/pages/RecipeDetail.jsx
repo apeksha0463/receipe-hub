@@ -7,6 +7,7 @@ import users from '../assets/icons/users.svg';
 import shield from '../assets/icons/shield.svg';
 import check from '../assets/icons/check.svg';
 import { getRecipeById } from '../data/recipes';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import './RecipeDetail.css';
 
 function IngredientsList({ ingredients }) {
@@ -52,6 +53,7 @@ function IngredientsList({ ingredients }) {
 export default function RecipeDetail() {
   const { id } = useParams();
   const recipe = getRecipeById(id);
+  useDocumentTitle(recipe ? `${recipe.title} | RecipeHub` : 'Recipe Not Found | RecipeHub');
 
   if (!recipe) {
     return (
@@ -66,8 +68,6 @@ export default function RecipeDetail() {
       </main>
     );
   }
-
-  const difficultyText = recipe.detailDifficulty ?? `${recipe.difficulty} Difficulty`;
 
   const scrollToInstructions = () => {
     document.getElementById('instructions')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -99,7 +99,7 @@ export default function RecipeDetail() {
           <li className="stat">
             <img src={clockAccent} alt="" width="20" height="20" />
             <span>
-              {recipe.time} mins <span className="stat__muted"> (prep + cook)</span>
+              {recipe.time} min <span className="stat__muted"> (prep + cook)</span>
             </span>
           </li>
           <li className="stat">
@@ -110,7 +110,7 @@ export default function RecipeDetail() {
           </li>
           <li className="stat">
             <img src={shield} alt="" width="20" height="20" />
-            <span>{difficultyText}</span>
+            <span>{recipe.difficulty} Difficulty</span>
           </li>
         </ul>
       </section>

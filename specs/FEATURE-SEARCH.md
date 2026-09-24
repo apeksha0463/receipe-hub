@@ -15,3 +15,6 @@ Users can type a query into the search bar (on Home or Recipes page) to filter t
 - Partial matches work (e.g. 'pan' matches 'Fluffy Pancakes')
 - Home search bar navigates to /recipes?q=<query> on submit
 - Whitespace-only query treated as empty
+- Typing on the Recipes page updates ?q= in the URL (clearing the box removes q)
+- The search survives opening a recipe and pressing Back, and a page refresh
+- Typing 'vegetable' finds Vegetable Fried Rice

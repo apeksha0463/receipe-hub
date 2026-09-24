@@ -7,9 +7,8 @@ import './RecipeCard.css';
  *
  * @param {object} recipe    entry from src/data/recipes.js
  * @param {string} [image]   override for the thumbnail (Home uses its own Carbonara photo)
- * @param {string} [timeUnit] "min" on the Recipes page, "mins" on Home (as in Figma)
  */
-export default function RecipeCard({ recipe, image, timeUnit = 'min' }) {
+export default function RecipeCard({ recipe, image }) {
   return (
     <Link to={`/recipes/${recipe.id}`} className="recipe-card">
       <div className="recipe-card__image">
@@ -19,7 +18,7 @@ export default function RecipeCard({ recipe, image, timeUnit = 'min' }) {
         <div className="recipe-card__meta">
           <span className="recipe-card__time">
             <img src={clock} alt="" width="16" height="16" />
-            {recipe.time} {timeUnit}
+            {recipe.time} min
           </span>
           <span className={`badge badge--${recipe.difficulty.toLowerCase()}`}>
             {recipe.difficulty}

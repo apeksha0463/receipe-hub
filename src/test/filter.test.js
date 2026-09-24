@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { recipes, filters, filterRecipes } from '../data/recipes'
+import { recipes, filters, filterRecipes, findFilter } from '../data/recipes'
 
 describe('Feature: Category Filter (TC-FILTER)', () => {
   it('TC-FILTER-01: All filter returns all recipes', () => {
@@ -45,5 +45,18 @@ describe('Feature: Category Filter (TC-FILTER)', () => {
 
   it('TC-FILTER-08: filters array has exactly 5 entries (All + 4 categories)', () => {
     expect(filters).toHaveLength(5)
+  })
+
+  it('TC-FILTER-09: findFilter matches categories ignoring case', () => {
+    expect(findFilter('dinner')).toBe('Dinner')
+    expect(findFilter('DESSERTS')).toBe('Desserts')
+    expect(findFilter('Breakfast')).toBe('Breakfast')
+    expect(findFilter('all')).toBe('All')
+  })
+
+  it('TC-FILTER-10: findFilter defaults unknown or missing categories to All', () => {
+    expect(findFilter('Sushi')).toBe('All')
+    expect(findFilter(null)).toBe('All')
+    expect(findFilter('')).toBe('All')
   })
 })

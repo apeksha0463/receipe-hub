@@ -5,8 +5,10 @@ import ScrollManager from './components/ScrollManager';
 import Home from './pages/Home';
 import Recipes from './pages/Recipes';
 import RecipeDetail from './pages/RecipeDetail';
+import useDocumentTitle from './hooks/useDocumentTitle';
 
 function NotFound() {
+  useDocumentTitle('Page Not Found | RecipeHub');
   return (
     <main className="page" style={{ padding: '80px var(--page-pad) 120px' }}>
       <h1 className="section-title">Page not found</h1>

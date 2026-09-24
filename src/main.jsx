@@ -7,7 +7,8 @@ import App from './App.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    {/* Sync (non-transition) URL updates so the URL-driven search input keeps every keystroke. */}
+    <BrowserRouter useTransitions={false}>
       <App />
     </BrowserRouter>
   </StrictMode>,

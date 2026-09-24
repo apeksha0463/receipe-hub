@@ -34,6 +34,11 @@ describe('Feature: Recipe Search (TC-SEARCH)', () => {
     expect(result).toHaveLength(recipes.length)
   })
 
+  it('TC-SEARCH-08: search for vegetable finds Vegetable Fried Rice', () => {
+    const result = searchRecipes(recipes, 'vegetable')
+    expect(result.map(r => r.title)).toEqual(['Vegetable Fried Rice'])
+  })
+
   it('TC-SEARCH-07: search for salmon finds grilled salmon', () => {
     const result = searchRecipes(recipes, 'salmon')
     expect(result.length).toBeGreaterThan(0)

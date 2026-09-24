@@ -64,14 +64,17 @@
   flex: none;
 }
 
+/* Wraps to at most two lines, then ends with an ellipsis. */
 .recipe-card__title {
+  display: -webkit-box;
   overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   font-size: var(--fs-subheading);
   font-weight: 400;
   line-height: 1.5;
   color: var(--color-text);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* ---------- Difficulty badge ---------- */

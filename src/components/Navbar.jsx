@@ -9,10 +9,11 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Close the mobile menu whenever the route changes.
+  // Close the mobile menu on every navigation, including re-clicking the current link
+  // (e.g. Categories while already at /#categories), which only changes location.key.
   useEffect(() => {
     setMenuOpen(false);
-  }, [location.pathname, location.hash]);
+  }, [location.key]);
 
   return (
     <header className="navbar">

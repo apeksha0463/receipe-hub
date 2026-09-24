@@ -1,40 +1,41 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import searchIcon from '../assets/icons/search.svg';
-import { filterRecipes, filters, recipes, searchRecipes } from '../data/recipes';
+import { filterRecipes, filters, findFilter, recipes, searchRecipes } from '../data/recipes';
 import './Recipes.css';
 
 export default function Recipes() {
+  useDocumentTitle('Recipes | RecipeHub');
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // The category filter lives in the URL (?category=Dinner) so Home category cards can link to it.
-  const categoryParam = searchParams.get('category');
-  const activeFilter = filters.includes(categoryParam) ? categoryParam : 'All';
-
-  // The search text is local state, seeded from ?q= (used by the Home search bar).
-  const urlQuery = searchParams.get('q') ?? '';
-  const [query, setQuery] = useState(urlQuery);
-  useEffect(() => {
-    setQuery(urlQuery);
-  }, [urlQuery]);
+  // The URL is the single source of truth for both the category (?category=Dinner,
+  // so Home category cards can link to it) and the search text (?q=pasta).
+  const activeFilter = findFilter(searchParams.get('category'));
+  const query = searchParams.get('q') ?? '';
 
   const visibleRecipes = useMemo(
     () => filterRecipes(searchRecipes(recipes, query), activeFilter),
     [activeFilter, query],
   );
 
-  const selectFilter = (filter) => {
+  const updateParam = (name, value, options) => {
     setSearchParams((params) => {
       const next = new URLSearchParams(params);
-      if (filter === 'All') {
-        next.delete('category');
+      if (value) {
+        next.set(name, value);
       } else {
-        next.set('category', filter);
+        next.delete(name);
       }
       return next;
-    });
+    }, options);
   };
+
+  // Replace (not push) while typing so each keystroke doesn't add a history entry.
+  const changeQuery = (value) => updateParam('q', value, { replace: true });
+
+  const selectFilter = (filter) => updateParam('category', filter === 'All' ? '' : filter);
 
   return (
     <main className="page recipes-page">
@@ -52,7 +53,7 @@ export default function Recipes() {
               type="search"
               placeholder="Search recipes..."
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => changeQuery(event.target.value)}
             />
           </div>
 
